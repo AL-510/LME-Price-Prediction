@@ -16,7 +16,7 @@ from tensorflow.keras.optimizers import Adam
 
 # Load dataset
 date_parser = lambda x: pd.to_datetime(x, format='%Y %B')
-data = pd.read_csv(r"C:\Exide\westmetall\output_zinc.csv", parse_dates=['Month'], date_parser = date_parser, index_col='Month')
+data = pd.read_csv("LME\output_zinc.csv", parse_dates=['Month'], date_parser = date_parser, index_col='Month')
 
 data.iloc[:, 0:] = data.iloc[:, 0:].replace({',': ''}, regex=True)
 
@@ -33,7 +33,7 @@ data = pd.read_csv("modified_file.csv", parse_dates=['Month'], index_col='Month'
 cols = list(data.columns)[:2]
 data = data[cols].astype(float)
 data = data.interpolate()
-data.to_csv(r"C:\Exide\westmetall\interpolated_zinc_monthly.csv")
+data.to_csv("LME\interpolated_zinc_monthly.csv")
 
 target_columns = ['LME Zinc Cash-Settlement', 'LME Zinc 3-month']
 target_data = data[target_columns].values
@@ -170,7 +170,7 @@ data = pd.DataFrame({
     "MAPE LME Zinc Cash-Settlement": mape_lme_cash
 })
 
-data.to_csv(r"C:\Exide\westmetall\LSTM_predictions_with_accuracy.csv", index=False)
+data.to_csv("\LME\LSTM_predictions_with_accuracy.csv", index=False)
 
 
 # In[27]:
@@ -186,14 +186,13 @@ def combine_csv(original_file, prediction_file, output_file):
       output_file (str): Path to the output Excel workbook.
   """
   # Create full paths for the files incorporating the directory
-  original_file = f"C:\\Exide\\westmetall\\{original_file}"
-  prediction_file = f"C:\\Exide\\westmetall\\{prediction_file}"
-  output_file = f"C:\\Exide\\westmetall\\{output_file}"
+  original_file = f"original_file.csv"
+  prediction_file = f"prediction_file.csv"
+  output_file = f"output_file.csv"
 
   # Read CSV files
-  original_data = pd.read_csv(r"C:\Exide\westmetall\interpolated_zinc_monthly.csv")
-  prediction_data = pd.read_csv(r"C:\Exide\westmetall\LSTM_predictions_with_accuracy.csv")
-
+  original_data = pd.read_csv(r"interpolated_zinc_monthly.csv")
+  prediction_data = pd.read_csv(r"LSTM_predictions_with_accuracy.csv")
   # Create a dictionary with dataframes as values
   data = {
       "Original Data": original_data,
@@ -216,7 +215,7 @@ combine_csv(original_file, prediction_file, output_file)
 print(f"CSV files combined into '{output_file}'.")
 
 
-# In[ ]:
+
 
 
 
